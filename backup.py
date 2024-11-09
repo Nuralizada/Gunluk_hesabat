@@ -944,27 +944,32 @@ if page == "Tranzit":
     # Tarix filtrlərini yaratmaq üçün iki sütun istifadə edirik
     col_start_date, col_end_date = st.columns(2)
 
+    # Tarix filtrlərini yaratmaq üçün iki sütun istifadə edirik
+    col_start_date, col_end_date = st.columns(2)
+
     # Başlanğıc tarixi üçün giriş
     with col_start_date:
         tranzit_start_date = st.date_input(
             "Başlanğıc tarixi",
-            value=datetime.date(2024, 1, 1),
-            min_value=datetime.date(2023, 1, 1),
-            max_value=datetime.date.today()
+            value=datetime.date(2024, 1, 1),  # Default olaraq 2024-cü ilin yanvarı
+            min_value=datetime.date(2023, 1, 1),  # Minimum tarix
+            max_value=datetime.date.today() - datetime.timedelta(days=1)  # Bitiş tarixi today() - 1 gün
         )
 
     # Bitiş tarixi üçün giriş
     with col_end_date:
         tranzit_end_date = st.date_input(
             "Bitiş tarixi",
-            value=datetime.date.today(),
-            min_value=tranzit_start_date,
-            max_value=datetime.date.today()
+            value=datetime.date.today() - datetime.timedelta(days=1),  # Default olaraq bu günün bir gün əvvəli
+            min_value=tranzit_start_date,  # Başlanğıc tarixindən sonra seçilə bilər
+            max_value=datetime.date.today() - datetime.timedelta(days=1)  # Bitiş tarixi today() - 1 gün
         )
 
+    # Tarixləri pandas datetime formatına çevirmək
     if tranzit_start_date and tranzit_end_date:
         tranzit_start_date = pd.to_datetime(tranzit_start_date)
         tranzit_end_date = pd.to_datetime(tranzit_end_date)
+
 
         # Tarix aralığına əsasən tam və qismən plan həcmi hesablayan funksiya
         def calculate_plan_hecmi(plan_df, start_date, end_date, rejim):
@@ -1105,22 +1110,31 @@ if page == "Tranzit":
         selected_country = st.selectbox("Göndərən ölkəni seçin:", options=available_countries)
 
         # Fakt məlumatlarını hazırlamaq (Digər yüklər çıxarılır)
+        # Fakt məlumatlarını hazırlamaq (Digər yüklər çıxarılır)
         fakt_summary = fakt_df[
-            (fakt_df['Tarix'] >= tranzit_start_date) &
-            (fakt_df['Tarix'] <= tranzit_end_date) &
-            (fakt_df['Rejim'] == 'Tranzit') &
-            (fakt_df['Göndərən ölkə'] == selected_country) &
+            (fakt_df['Tarix'] >= tranzit_start_date) & 
+            (fakt_df['Tarix'] <= tranzit_end_date) & 
+            (fakt_df['Rejim'] == 'Tranzit') & 
+            (fakt_df['Göndərən ölkə'] == selected_country) & 
             (fakt_df['əsas_yüklər'] != 'Digər yüklər')
         ].groupby('əsas_yüklər')['Həcm_fakt'].sum().reset_index()
 
         # Yüklər üzrə plan məlumatlarını hesablamaq
-        yukler = fakt_summary['əsas_yüklər'].unique()
+        yukler = fakt_df[
+            (fakt_df['Göndərən ölkə'] == selected_country) & 
+            (fakt_df['əsas_yüklər'] != 'Digər yüklər')
+        ]['əsas_yüklər'].unique()
+
         yuk_plan_hecmi = []
         yuk_fakt_hecmi = []
 
         for yuk in yukler:
+            # Plan həcmini hesabla
             plan_hecmi = calculate_plan_hecmi(plan_df, tranzit_start_date, tranzit_end_date, 'Tranzit', selected_country, yuk)
-            fakt_hecmi = fakt_summary[fakt_summary['əsas_yüklər'] == yuk]['Həcm_fakt'].sum()
+            
+            # Fakt həcmini yoxla və 0 ilə doldur
+            fakt_hecmi = fakt_summary[fakt_summary['əsas_yüklər'] == yuk]['Həcm_fakt'].sum() if yuk in fakt_summary['əsas_yüklər'].values else 0
+            
             yuk_plan_hecmi.append(plan_hecmi)
             yuk_fakt_hecmi.append(fakt_hecmi)
 
@@ -1136,7 +1150,10 @@ if page == "Tranzit":
             axis=1
         )
 
-        # Plan və fakt həcmi sıfır olanları çıxarırıq
+        # NaN dəyərlərini 0 ilə doldurmaq
+        summary_yuk_df.fillna(0, inplace=True)
+
+        # Həm plan, həm də fakt sıfır olanları çıxarırıq
         summary_yuk_df = summary_yuk_df[(summary_yuk_df['Plan'] != 0) | (summary_yuk_df['Fakt'] != 0)]
 
         # Cədvəli azalan sıraya görə düzün və indeks 1-dən başlasın
@@ -1144,12 +1161,11 @@ if page == "Tranzit":
         summary_yuk_df.index = range(1, len(summary_yuk_df) + 1)
 
         # Stilizə olunmuş cədvəli göstərmək
-        
         st.table(summary_yuk_df[['Yükün adı', 'Plan', 'Fakt', 'Yerinə Yetirmə Faizi']].style.format({
             'Plan': '{:,.0f}',
             'Fakt': '{:,.0f}',
-            'Yerinə yetirmə Faizi': '{:.0f}%'
+            'Yerinə Yetirmə Faizi': '{:.0f}%'
         }).set_table_styles([
             {'selector': 'thead th', 'props': [('background-color', '#2b2563'), ('color', 'white')]},
-            {'selector': 'tbody td', 'props': [('text-align', 'center'), ('background-color', '#f0f0f5')]}
+            {'selector': 'tbody td', 'props': [('text-align', 'center'), ('background-color', '#f0f0f5')]},
         ]))
