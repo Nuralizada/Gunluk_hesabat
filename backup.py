@@ -1201,7 +1201,7 @@ else:
                         {'selector': 'tbody td', 'props': [('text-align', 'center'), ('background-color', '#f0f0f5')]},
                     ]))
         # Çıxış düyməsi
-    if st.button("Çıxış"):
-        st.session_state.authenticated = False
-        st.session_state.user_id = None
-        st.experimental_rerun()
+                if st.button("Çıxış"):
+                    st.session_state.authenticated = False
+                    st.session_state.user_id = None
+                    st.experimental_rerun()
