@@ -2,9 +2,11 @@ import streamlit as st
 
 # İstifadəçi məlumatlarını saxlayan bir dict (fayl yerinə)
 USER_DATA = {
-    "123": "password123",  # İstifadəçi ID: parol
-    "456": "password456",
-    "789": "password789"
+    "Natiq.Rasulzada": "password123",  # İstifadəçi ID: parol
+    "Gulchin.Nuralizada.ADY": "gunluk2501",
+    "Lalezar.Hanifayeva": "gunluk0303",
+    "Lala.Rzayeva.ADY": "gunluk123",
+    "Adil.Movsumov": "Pilotboeing737"
 }
 
 # Session State-də identifikasiya vəziyyətini və istifadəçi ID-ni yoxlamaq
@@ -1200,8 +1202,4 @@ else:
                         {'selector': 'thead th', 'props': [('background-color', '#2b2563'), ('color', 'white')]},
                         {'selector': 'tbody td', 'props': [('text-align', 'center'), ('background-color', '#f0f0f5')]},
                     ]))
-        # Çıxış düyməsi
-                if st.button("Çıxış"):
-                    st.session_state.authenticated = False
-                    st.session_state.user_id = None
-                    st.experimental_rerun()
+       
