@@ -19,7 +19,7 @@ if not st.session_state.authenticated:
     
     # İstifadəçidən ID və parol tələb olunur
     user_id = st.text_input("İstifadəçi ID:")
-    password = st.text_input("Parol:", type="password")
+    password = st.text_input("Password:", type="password")
     
     if st.button("Giriş"):
         # İstifadəçi ID və parol yoxlanılır
