@@ -18,7 +18,7 @@ if not st.session_state.authenticated:
     st.title("Tətbiqə Giriş")
     
     # İstifadəçidən ID və parol tələb olunur
-    user_id = st.text_input("İstifadəçi ID:")
+    user_id = st.text_input("ID:")
     password = st.text_input("Password:", type="password")
     
     if st.button("Giriş"):
