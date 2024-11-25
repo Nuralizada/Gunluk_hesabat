@@ -26,7 +26,7 @@ if not st.session_state.authenticated:
         if user_id in USER_DATA and USER_DATA[user_id] == password:
             st.session_state.authenticated = True
             st.session_state.user_id = user_id
-            st.success(f"Giriş uğurlu oldu! Xoş gəldiniz, İstifadəçi ID: {user_id}.")
+            st.success(f"Giriş uğurlu oldu! Xoş gəldiniz, {user_id}.")
         else:
             st.error("Yanlış istifadəçi ID və ya parol.")
 else: 
