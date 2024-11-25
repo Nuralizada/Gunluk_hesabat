@@ -2,10 +2,10 @@ import streamlit as st
 
 # İstifadəçi məlumatlarını saxlayan bir dict (fayl yerinə)
 USER_DATA = {
-    "Natiq.Rasulzada": "password123",  # İstifadəçi ID: parol
+    "Natiq.Rasulzada": "gunluk123",  # İstifadəçi ID: parol
     "Gulchin.Nuralizada.ADY": "gunluk2501",
     "Lalezar.Hanifayeva": "gunluk0303",
-    "Lala.Rzayeva.ADY": "gunluk123",
+    "Lala.Rzayeva.ADY": "gunlukhesabat123",
     "Adil.Movsumov": "Pilotboeing737"
 }
 
