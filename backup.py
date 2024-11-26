@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # İstifadəçi məlumatlarını saxlayan bir dict (fayl yerinə)
 USER_DATA = {
@@ -26,10 +28,12 @@ if not st.session_state.authenticated:
         if user_id in USER_DATA and USER_DATA[user_id] == password:
             st.session_state.authenticated = True
             st.session_state.user_id = user_id
-            st.experimental_rerun()  # Girişdən sonra səhifəni yeniləyir
+            # Burada heç bir əlavə funksiyaya ehtiyac yoxdur, sessiya vəziyyəti dəyişdikdə avtomatik olaraq yenilənəcək
         else:
             st.error("Yanlış istifadəçi ID və ya parol.")
-else:
+
+# Hesabatların göstərilməsi
+if st.session_state.authenticated:
             
             import streamlit as st
             import pandas as pd
