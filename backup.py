@@ -28,12 +28,12 @@ if not st.session_state.authenticated:
             st.session_state.authenticated = True
             st.session_state.user_id = user_id
             st.success(f"Giriş uğurlu oldu! Xoş gəldiniz, {user_id}.")
-            st.button("Giriş")
+            
         else:
             st.error("Yanlış istifadəçi ID və ya parol.")
             
 else:
-            
+            st.button("Giriş")
             import streamlit as st
             import pandas as pd
             import datetime
