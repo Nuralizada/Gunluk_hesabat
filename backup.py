@@ -1205,5 +1205,5 @@ if not st.session_state.authenticated:
                                         {'selector': 'thead th', 'props': [('background-color', '#2b2563'), ('color', 'white')]},
                                         {'selector': 'tbody td', 'props': [('text-align', 'center'), ('background-color', '#f0f0f5')]},
                                     ]))
-              else:
-                st.error("Yanlış istifadəçi ID və ya parol.")         
+                      else:
+                        st.error("Yanlış istifadəçi ID və ya parol.")         
