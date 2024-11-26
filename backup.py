@@ -14,26 +14,23 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
     st.session_state.user_id = None
 
-# Giriş səhifəsi
 if not st.session_state.authenticated:
     st.title("Tətbiqə Giriş")
     
     # İstifadəçidən ID və parol tələb olunur
     user_id = st.text_input("ID:")
     password = st.text_input("Password:", type="password")
-    
-    
+
+    if st.button("Giriş"):
         # İstifadəçi ID və parol yoxlanılır
         if user_id in USER_DATA and USER_DATA[user_id] == password:
             st.session_state.authenticated = True
             st.session_state.user_id = user_id
-            st.success(f"Giriş uğurlu oldu! Xoş gəldiniz, {user_id}.")
-            
+            st.experimental_rerun()  # Girişdən sonra səhifəni yeniləyir
         else:
             st.error("Yanlış istifadəçi ID və ya parol.")
-            
 else:
-            st.button("Giriş")
+            
             import streamlit as st
             import pandas as pd
             import datetime
