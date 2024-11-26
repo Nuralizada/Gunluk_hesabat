@@ -13,8 +13,8 @@ USER_DATA = {
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
     st.session_state.user_id = None
-    st.session_state.login_attempted = False  # Giriş cəhdi vəziyyəti
 
+# Giriş səhifəsi
 if not st.session_state.authenticated:
     st.title("Tətbiqə Giriş")
     
@@ -22,10 +22,7 @@ if not st.session_state.authenticated:
     user_id = st.text_input("ID:")
     password = st.text_input("Password:", type="password")
     
-    # Giriş yalnız bir dəfə işlənir
-    if st.button("Giriş") and not st.session_state.login_attempted:
-        st.session_state.login_attempted = True  # Giriş cəhdi başladıldı
-        
+    if st.button("Giriş"):
         # İstifadəçi ID və parol yoxlanılır
         if user_id in USER_DATA and USER_DATA[user_id] == password:
             st.session_state.authenticated = True
@@ -33,7 +30,6 @@ if not st.session_state.authenticated:
             st.success(f"Giriş uğurlu oldu! Xoş gəldiniz, {user_id}.")
         else:
             st.error("Yanlış istifadəçi ID və ya parol.")
-            st.session_state.login_attempted = False  # Yanlışlıq olduqda təkrar cəhdə icazə
 else:
             
             import streamlit as st
