@@ -32,7 +32,7 @@ if not st.session_state.authenticated:
         
 
                 # Hesabatların göstərilməsi
-                if st.session_state.authenticated:
+        if st.session_state.authenticated:
                             
                             import streamlit as st
                             import pandas as pd
