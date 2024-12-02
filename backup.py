@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 
+st.set_page_config(layout="wide")
 # İstifadəçi məlumatlarını saxlayan bir dict (fayl yerinə)
 USER_DATA = {
     "Natiq.Rasulzada": "gunluk123",  # İstifadəçi ID: parol
@@ -45,7 +46,7 @@ if st.session_state.authenticated:
             fakt_df = pd.read_csv(fact_url)
             plan_df = pd.read_excel("plan fakt.xlsx")
             plan_f = pd.read_excel("Ekspeditor Fraxt.xlsx")
-            st.set_page_config(layout="wide")
+            
             st.markdown('<style>div.block-container{padding-top:3rem;}</style>', unsafe_allow_html=True)
             
             # Tarix sütunlarını datetime formatına çevirmək
